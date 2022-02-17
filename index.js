@@ -41,17 +41,17 @@ async function run() {
             const result = await userCollection.insertOne(users);
             res.json(result)
         })
-        
-        
+
+
         app.post('/addReview', async (req, res) => {
             const service = req.body;
             const result = await reviewCollection.insertOne(service);
             console.log(result);
             res.json(result)
-        } )
+        })
 
-        
-       
+
+
 
 
         // Update User ......... Upsert User 
@@ -60,7 +60,7 @@ async function run() {
             const filter = { email: user.email };
             const options = { upsert: true };
             const updateDoc = { $set: user };
-            const result = await userCollection.updateOne(filter,updateDoc, options );
+            const result = await userCollection.updateOne(filter, updateDoc, options);
             res.json(result)
         })
 
@@ -69,8 +69,8 @@ async function run() {
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
-            const updateDoc = { $set:{ role: 'admin'} };
-            const result = await userCollection.updateOne(filter,updateDoc );
+            const updateDoc = { $set: { role: 'admin' } };
+            const result = await userCollection.updateOne(filter, updateDoc);
             res.json(result)
         })
 
@@ -83,7 +83,7 @@ async function run() {
             const user = await userCollection.findOne(query);
             let isAdmin = false;
 
-            if (user?.role === 'admin'){
+            if (user?.role === 'admin') {
                 isAdmin = true;
             }
             res.json({ admin: isAdmin });
@@ -93,8 +93,8 @@ async function run() {
             const cursor = reviewCollection.find({});
             const service = await cursor.toArray();
             res.send(service);
-       })
-     
+        })
+
 
 
 
@@ -102,9 +102,9 @@ async function run() {
             const cursor = productCollection.find({});
             const service = await cursor.toArray();
             res.send(service);
-          })
+        })
 
-   
+
 
 
 
