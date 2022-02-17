@@ -47,16 +47,14 @@ async function run() {
             const service = req.body;
             const result = await reviewCollection.insertOne(service);
             console.log(result);
-
             res.json(result)
         } )
 
         
-        // get method
+       
 
 
         // Update User ......... Upsert User 
-
         app.put('/users', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
@@ -91,7 +89,11 @@ async function run() {
             res.json({ admin: isAdmin });
         })
 
-
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const service = await cursor.toArray();
+            res.send(service);
+       })
      
 
 
