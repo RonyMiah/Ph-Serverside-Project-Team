@@ -22,6 +22,7 @@ async function run() {
         const database = client.db("DhakaShop");
         const productCollection = database.collection("all_product");
         const userCollection = database.collection('users')
+        const reviewCollection = database.collection('review')
 
         // console.log('Database connected successfully');
 
@@ -42,18 +43,16 @@ async function run() {
         })
         
         
-        // app.post('/addReview', async (req, res) => {
-        //     const service = req.body;
-        //     const result = await productCollection.insertOne(service);
+        app.post('/addReview', async (req, res) => {
+            const service = req.body;
+            const result = await reviewCollection.insertOne(service);
+            console.log(result);
 
-        //     console.log(result);
+            res.json(result)
+        } )
 
-        //     res.json(result)
-        // } )
-
+        
         // get method
-
-
 
 
         // Update User ......... Upsert User 
@@ -76,6 +75,25 @@ async function run() {
             const result = await userCollection.updateOne(filter,updateDoc );
             res.json(result)
         })
+
+
+        // Get Methode 
+
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email };
+            const user = await userCollection.findOne(query);
+            let isAdmin = false;
+
+            if (user?.role === 'admin'){
+                isAdmin = true;
+            }
+            res.json({ admin: isAdmin });
+        })
+
+
+     
+
 
 
         app.get('/product', async (req, res) => {
